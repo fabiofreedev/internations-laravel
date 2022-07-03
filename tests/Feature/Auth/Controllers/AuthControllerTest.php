@@ -30,8 +30,8 @@ it('tests login for existing user', function () {
         ]
     )
         ->assertSuccessful()
-    ->assertJsonStructure([
-        'access_token',
-        'token_type'
-    ]);
+        ->assertJsonStructure([
+            'access_token',
+            'token_type'
+        ]);
 });
