@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+Route::middleware('admin')->group(function () {
     Route::apiResource('users', UserController::class)->only(['index', 'store', 'destroy']);
 });
 
