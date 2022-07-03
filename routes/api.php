@@ -18,7 +18,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('admin')->group(function () {
     Route::apiResource('users', UserController::class)->only(['index', 'store', 'destroy']);
-    Route::apiResource('groups', GroupController::class)->only(['index', 'store', 'destroy']);
+    Route::prefix('users')->group(function () {
+        Route::apiResource('groups', GroupController::class)->only(['index', 'store', 'destroy']);
+        Route::put('groups/{group}/user', [GroupController::class, 'addUser']);
+    });
 });
 
 Route::post('/login', [AuthController::class, 'login']);
