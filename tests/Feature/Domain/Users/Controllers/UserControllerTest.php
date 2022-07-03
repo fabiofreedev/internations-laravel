@@ -3,6 +3,7 @@
 use App\Domain\Users\Controllers\UserController;
 use App\Domain\Users\Roles\Enums\UserRole;
 use App\Domain\Users\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Laravel\Sanctum\Sanctum;
 
 it('tests users routes are protected from non-logged users', function ($method, $route, $id) {
@@ -80,8 +81,34 @@ it('tests successful user store', function () {
         )
         ->assertJsonFragment(
             [
-                'email'    => 'user@internations.com',
-                'name'     => 'Test User'
+                'email' => 'user@internations.com',
+                'name'  => 'Test User'
             ]
         );
+});
+
+it('tests a user deletion', function () {
+    Sanctum::actingAs(
+        User::factory()
+            ->hasRole([
+                'role' => UserRole::ADMIN
+            ])
+            ->create(),
+    );
+
+    $user = User::factory()->create();
+
+    $this->deleteJson(
+        action(
+            [UserController::class, 'destroy'],
+            [
+                'user' => $user->id
+            ]
+        ),
+    )
+        ->assertNoContent();
+
+    $this->expectException(ModelNotFoundException::class);
+
+    User::findOrFail($user->id);
 });
