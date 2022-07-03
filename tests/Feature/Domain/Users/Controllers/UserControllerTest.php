@@ -6,7 +6,8 @@ use App\Domain\Users\User;
 use Laravel\Sanctum\Sanctum;
 
 it('tests users routes are protected from non-logged users', function ($method, $route, $id) {
-    $this->json($method, action([UserController::class, $route], $id))->assertUnauthorized();
+    $this->json($method, action([UserController::class, $route], $id))
+        ->assertUnauthorized();
 })->with([
     ['GET', 'index', []],
     ['POST', 'store', []],
@@ -18,7 +19,8 @@ it('tests a route accessible only for admin users is unauthorized for non-admin 
         User::factory()->create(),
     );
 
-    $this->json($method, action([UserController::class, $route], $id))->assertUnauthorized();
+    $this->json($method, action([UserController::class, $route], $id))
+        ->assertUnauthorized();
 })->with([
     ['GET', 'index', []],
     ['POST', 'store', []],
@@ -34,7 +36,8 @@ it('tests index route is accessible to an admin user', function () {
             ->create(),
     );
 
-    $this->getJson(action([UserController::class, 'index']))->assertSuccessful();
+    $this->getJson(action([UserController::class, 'index']))
+        ->assertSuccessful();
 });
 
 it('tests validation errors for store route', function () {
@@ -46,5 +49,33 @@ it('tests validation errors for store route', function () {
             ->create(),
     );
 
-    $this->postJson(action([UserController::class, 'store']), [])->assertJsonValidationErrors(['email', 'name', 'password']);
+    $this->postJson(action([UserController::class, 'store']), [])
+        ->assertJsonValidationErrors(['email', 'name', 'password']);
+});
+
+it('tests successful user store', function () {
+    Sanctum::actingAs(
+        User::factory()
+            ->hasRole([
+                'role' => UserRole::ADMIN
+            ])
+            ->create(),
+    );
+
+    $this->postJson(
+        action([UserController::class, 'store']),
+        [
+            'email'    => 'user@internations.com',
+            'name'     => 'Test User',
+            'password' => 'password'
+        ]
+    )
+        ->assertSuccessful()
+        ->assertJson(
+            [
+                'email'    => 'user@internations.com',
+                'name'     => 'Test User',
+                'password' => 'password'
+            ]
+        );
 });

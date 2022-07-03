@@ -3,7 +3,6 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -17,9 +16,9 @@ class AdminAuthenticated
      *
      * @param Request $request
      * @param \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @return JsonResponse|RedirectResponse
+     * @return Response|JsonResponse
      */
-    public function handle(Request $request, Closure $next): JsonResponse|RedirectResponse
+    public function handle(Request $request, Closure $next): Response|JsonResponse
     {
         if (Auth::check() && Auth::user()?->isAdmin()) {
             return $next($request);
