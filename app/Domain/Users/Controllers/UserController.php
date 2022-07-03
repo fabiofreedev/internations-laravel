@@ -2,6 +2,7 @@
 
 namespace App\Domain\Users\Controllers;
 
+use App\Domain\Users\Requests\StoreRequest;
 use App\Domain\Users\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Collection;
@@ -25,9 +26,8 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        //
     }
 
     /**
