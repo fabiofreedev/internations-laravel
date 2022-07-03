@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use function abort;
 
 class AdminAuthenticated
@@ -16,9 +17,9 @@ class AdminAuthenticated
      *
      * @param Request $request
      * @param \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @return Response|RedirectResponse
+     * @return JsonResponse|RedirectResponse
      */
-    public function handle(Request $request, Closure $next): Response|RedirectResponse
+    public function handle(Request $request, Closure $next): JsonResponse|RedirectResponse
     {
         if (Auth::check() && Auth::user()?->isAdmin()) {
             return $next($request);

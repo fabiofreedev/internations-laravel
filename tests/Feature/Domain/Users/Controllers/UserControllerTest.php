@@ -1,6 +1,7 @@
 <?php
 
 use App\Domain\Users\Controllers\UserController;
+use App\Domain\Users\Roles\Enums\UserRole;
 use App\Domain\Users\User;
 use Laravel\Sanctum\Sanctum;
 
@@ -18,4 +19,16 @@ it('tests a route accessible only for admin users is unauthorized for non-admin 
     );
 
     $this->getJson(action([UserController::class, 'index']))->assertUnauthorized();
+});
+
+it('tests index route is accessible to an admin user', function () {
+    Sanctum::actingAs(
+        User::factory()
+            ->hasRole([
+                'role' => UserRole::ADMIN
+            ])
+            ->create(),
+    );
+
+    $this->getJson(action([UserController::class, 'index']))->assertSuccessful();
 });

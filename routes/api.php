@@ -2,7 +2,6 @@
 
 use App\Domain\Auth\Controllers\AuthController;
 use App\Domain\Users\Controllers\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::apiResource('users', UserController::class)->only(['index', 'store', 'destroy']);
 });
 
