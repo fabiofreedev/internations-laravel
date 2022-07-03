@@ -30,7 +30,7 @@ class UserController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * A validation request should be created to ensure thar the user exists
      *
      * @param int $id
      * @return \Illuminate\Http\Response
