@@ -108,7 +108,5 @@ it('tests a user deletion', function () {
     )
         ->assertNoContent();
 
-    $this->expectException(ModelNotFoundException::class);
-
-    User::findOrFail($user->id);
+    $this->assertModelMissing($user);
 });
