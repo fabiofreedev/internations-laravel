@@ -71,11 +71,17 @@ it('tests successful user store', function () {
         ]
     )
         ->assertSuccessful()
-        ->assertJson(
+        ->assertJsonStructure(
+            [
+                'email',
+                'name',
+                'id'
+            ]
+        )
+        ->assertJsonFragment(
             [
                 'email'    => 'user@internations.com',
-                'name'     => 'Test User',
-                'password' => 'password'
+                'name'     => 'Test User'
             ]
         );
 });
