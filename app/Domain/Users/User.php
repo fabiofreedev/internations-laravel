@@ -2,9 +2,11 @@
 
 namespace App\Domain\Users;
 
+use App\Domain\Users\Groups\Group;
 use App\Domain\Users\Roles\Enums\UserRole;
 use App\Domain\Users\Roles\Role;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -52,6 +54,14 @@ class User extends Authenticatable
     public function role(): HasOne
     {
         return $this->hasOne(Role::class);
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function groups(): BelongsToMany
+    {
+        return $this->belongsToMany(Group::class);
     }
 
     /**
