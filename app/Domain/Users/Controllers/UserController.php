@@ -6,7 +6,7 @@ use App\Domain\Users\Requests\StoreRequest;
 use App\Domain\Users\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
@@ -32,11 +32,13 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id): \Illuminate\Http\Response
     {
-        //
+        User::destroy($id);
+
+        return Response('', Response::HTTP_NO_CONTENT);
     }
 }
