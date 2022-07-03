@@ -63,7 +63,7 @@ it('tests successful group stored', function () {
     $this->postJson(
         action([GroupController::class, 'store']),
         [
-            'name'     => 'Test Group',
+            'name' => 'Test Group',
         ]
     )
         ->assertSuccessful()
@@ -75,7 +75,7 @@ it('tests successful group stored', function () {
         )
         ->assertJsonFragment(
             [
-                'name'  => 'Test Group'
+                'name' => 'Test Group'
             ]
         );
 });
@@ -101,7 +101,32 @@ it('tests a user deletion', function () {
     )
         ->assertNoContent();
 
-    $this->expectException(ModelNotFoundException::class);
+    $this->assertModelMissing($group);
+});
 
-    Group::findOrFail($group->id);
+it('add a user to a group', function () {
+    Sanctum::actingAs(
+        User::factory()
+            ->hasRole([
+                'role' => UserRole::ADMIN
+            ])
+            ->create(),
+    );
+
+    $user  = User::factory()->create();
+    $group = Group::factory()->create();
+
+    $this->putJson(
+        action(
+            [GroupController::class, 'addUser'],
+            [
+                'group' => $group->id
+            ]
+        ),
+        [
+            'user_id' => $user->id
+        ]
+    )->assertSuccessful();
+
+    $this->assertTrue($group->users->contains($user));
 });
