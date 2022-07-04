@@ -16,7 +16,7 @@ return new class () extends Migration {
     {
         Schema::create('roles', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(User::class)->constrained();
             $table->enum('role', UserRole::getArrayValues());
             $table->timestamps();
         });
