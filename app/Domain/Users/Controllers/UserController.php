@@ -30,7 +30,6 @@ class UserController extends Controller
     }
 
     /**
-     * A validation request should be created to ensure thar the user exists
      *
      * @param int $id
      * @return \Illuminate\Http\Response

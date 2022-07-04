@@ -34,7 +34,6 @@ class GroupController extends Controller
     }
 
     /**
-     * A validation request should be created to ensure thar the group exists
      *
      * @param Group $group
      * @return JsonResponse
