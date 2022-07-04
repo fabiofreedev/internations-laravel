@@ -21,6 +21,7 @@ Route::middleware('admin')->group(function () {
     Route::prefix('users')->group(function () {
         Route::apiResource('groups', GroupController::class)->only(['index', 'store', 'destroy']);
         Route::put('groups/{group}/user', [GroupController::class, 'addUser']);
+        Route::delete('groups/{group}/user/{user}', [GroupController::class, 'removeUser']);
     });
 });
 
